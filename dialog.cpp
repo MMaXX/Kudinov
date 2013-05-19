@@ -126,7 +126,7 @@ int Dialog::GetDatY(Node* n, int y)
         return res;
 }
 
-Node* Dialog::CreateRoot(Node* root)
+Node* Dialog::CreateRoot(Node* root) //создание рута
 {
     qDebug()<<"CreateRoot Start";
     Data* dat0;
@@ -145,7 +145,7 @@ Node* Dialog::CreateRoot(Node* root)
     qDebug()<<"CreateRoot Fin";
 }
 
-Node* Dialog::Choice(Node* n, int x, int y)
+Node* Dialog::Choice(Node* n, int x, int y) //переход к 1 из 4 ветвей(потомков)
 {
     if (x<n->xmid && y<n->ymid)
         return n->branch[0];
@@ -159,6 +159,67 @@ Node* Dialog::Choice(Node* n, int x, int y)
 
 void Dialog::SetPoint(Node* p,int x, int y, int size)
 {
+    Data* dat1;
+    dat1=(Data*)malloc(sizeof(Data));
+    Info* inf1;
+    inf1=(Info*)malloc(sizeof(Info));
+    while ((p->xmax-p->xmin)>size)
+    {
+        if (p->branch[0]&&p->branch[1]&&p->branch[2]&&p->branch[3])
+        {
+            p=Choice(p,x,y);
+        }
+        else
+        {
+            dat1->string="123";
+            dat1->x=GetDatX(p,x);
+            dat1->y=GetDatY(p,y);
+
+            inf1->string="123";
+            inf1->x=GetDatX(p,x);
+            inf1->y=GetDatY(p,y);
+
+            while (p->xmax!=512) //возврат к  руту
+            {
+             p=p->parent;
+            }
+            add(&p,inf1,dat1);
+
+            while (p->info[0]->x != inf1->x)
+            {
+                p=Choice(p,inf1->x,inf1->y);
+            }
+
+            dat1->x=p->xmid;
+            dat1->y=p->ymid;
+            inf1->x=p->xmid;
+            inf1->y=p->xmid;
+
+            while (p->xmax!=512) //возврат к руту
+            {
+             p=p->parent;
+            }
+            add(&p,inf1,dat1);
+
+
+        }
+    }
+    dat1->x=x;
+    dat1->y=y;
+    inf1->x=x;
+    inf1->y=y;
+
+    while (p->xmax!=512) //возврат к руту
+    {
+     p=p->parent;
+    }
+    add(&p,inf1,dat1);
+
+    Print(p,0);
+
+
+
+    /*
     qDebug()<<"SetPoint Start";
     p=CreateRoot(p);
     Node* node=NULL;
@@ -170,7 +231,7 @@ void Dialog::SetPoint(Node* p,int x, int y, int size)
     inf1=(Info*)malloc(sizeof(Info));
     inf1->string="123";
     qDebug()<<"p v SetPoint"<<p;
-    /*while ((node->xmax-node->xmin) != size)
+    while ((node->xmax-node->xmin) > size)
     {
         qDebug()<<"p->xmax"<<node->xmax;
         qDebug()<<"p->xmin"<<node->xmin;
@@ -181,51 +242,9 @@ void Dialog::SetPoint(Node* p,int x, int y, int size)
     add(&p,inf1,dat1);
     node=Choice(node,inf1->x,inf1->y);
     Print(p,0);
-    }
-    */
-    while ((p->xmax-p->xmin)!= size){
-        if (p->branch[0])
-    {
-        node=p->branch[0];
-        dat1->x=GetDatX(node,x);
-        dat1->y=GetDatY(node,y);
-        inf1->x=GetDatX(node,x);
-        inf1->y=GetDatY(node,y);
-        add(&p,inf1,dat1);
-        Print(p,0);
-    }
-        if (p->branch[1])
-    {
-        node=p->branch[1];
-        dat1->x=GetDatX(node,x);
-        dat1->y=GetDatY(node,y);
-        inf1->x=GetDatX(node,x);
-        inf1->y=GetDatY(node,y);
-        add(&p,inf1,dat1);
-        Print(p,0);
-    }
+    }*/
 
-        if (p->branch[2])
-    {
-        node=p->branch[2];
-        dat1->x=GetDatX(node,x);
-        dat1->y=GetDatY(node,y);
-        inf1->x=GetDatX(node,x);
-        inf1->y=GetDatY(node,y);
-        add(&p,inf1,dat1);
-        Print(p,0);
-    }
-        if (p->branch[3])
-    {
-        node=p->branch[3];
-        dat1->x=GetDatX(node,x);
-        dat1->y=GetDatY(node,y);
-        inf1->x=GetDatX(node,x);
-        inf1->y=GetDatY(node,y);
-        add(&p,inf1,dat1);
-        Print(p,0);
-    }
-    }
+
 }
 
 void Dialog::Print(Node *t, int l)

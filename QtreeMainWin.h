@@ -3,7 +3,6 @@
 
 /*! Файл главного окна приложения*/
 #include <QtGui>
-
 const int INPUT_LEN=64;
 const int SIDE=6;
 const int INPUT_S=8;
