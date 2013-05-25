@@ -18,19 +18,15 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0, Node* r = NULL);
     ~Dialog();
-  void Print(Node*,int);
   void SetLine(int,int,int,int);
-  void SetPoint(Node*,int,int,int);
-  Node* CreateRoot(Node*);
+  void SetPoint(int,int,int);
   Node* Choice(Node*,int,int);
-  int GetDatX(Node*,int);
-  int GetDatY(Node*,int);
+  //int GetDatX(Node*,int);
+  //int GetDatY(Node*,int);
   Node* r;
 
 private slots:
     void on_pushButton_clicked();
-
-    void on_Dialog_accepted();
 
     void on_lineEdit_3_editingFinished();
 

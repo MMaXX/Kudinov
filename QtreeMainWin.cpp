@@ -4,7 +4,6 @@
 #include"dialog.h"
 QtreeMainWin::QtreeMainWin(QWidget *pwgt):QMainWindow(pwgt)
 {
-    float brdr;
   /*создаем меню*/
   QMenu *mnFile=new QMenu(tr("&File"));
   mnFile->addAction(tr("&Open image"),this,SLOT(slOpenImage()));
@@ -12,11 +11,7 @@ QtreeMainWin::QtreeMainWin(QWidget *pwgt):QMainWindow(pwgt)
   mnFile->addAction(tr("&Save result"),this,SLOT(slSaveImage()));
   mnFile->addAction(tr("&New Tree"),this,SLOT(slNewTree()));
   menuBar()->addMenu(mnFile);
-  mnFile=new QMenu(tr("&Operating"));
-  mnFile->addAction(tr("&Set MLP parameters..."),this,SLOT(slSetNetParameters()));
-  mnFile->addAction(tr("&Train net"),this,SLOT(slTrainNet()));
-  menuBar()->addMenu(mnFile);
-
+  
   /*создаем базовые элементы управления*/
   QScrollArea *areaSrcImage=new QScrollArea;
   areaSrcImage->resize(300,300);/* TODO: выставить нормальные размеры областей просмотра*/
@@ -40,13 +35,13 @@ QtreeMainWin::QtreeMainWin(QWidget *pwgt):QMainWindow(pwgt)
   /* кнопка запуска распознавания*/
   QPushButton *btn=new QPushButton;
   btn->setText(tr("Button1"));
-  QObject::connect(btn,SIGNAL(clicked()),this,SLOT(slRecognizePattern()));/*обрабатываем событие нажатия кнопки*/
+  //QObject::connect(btn,SIGNAL(clicked()),this,SLOT(slRecognizePattern()));/*обрабатываем событие нажатия кнопки*/
 
   /*кнопка запуска анализа*/
   QPushButton *btna=new QPushButton;
 
   btna->setText(tr("Button2"));
-  QObject::connect(btna,SIGNAL(clicked()),this,SLOT(slAnalize()));/*обрабатываем событие нажатия кнопки*/
+  //QObject::connect(btna,SIGNAL(clicked()),this,SLOT(slAnalize()));/*обрабатываем событие нажатия кнопки*/
 
   /*поле для индикации результатов анализа*/
   lbl1=new QLabel;
@@ -57,8 +52,7 @@ QtreeMainWin::QtreeMainWin(QWidget *pwgt):QMainWindow(pwgt)
   sld->setRange(0,100);
   sld->setPageStep(1);
   sld->setValue(70);
-  brdr=(float(sld->value())/100);
-  QObject::connect(sld,SIGNAL(valueChanged(int)),this,SLOT(slChangeBorder(int)));/*событие движения ползунка*/
+  //QObject::connect(sld,SIGNAL(valueChanged(int)),this,SLOT(slChangeBorder(int)));/*событие движения ползунка*/
 
   /* сброс флага события распознавания*/
 
