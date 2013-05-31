@@ -6,6 +6,7 @@
 #include "ui_dialog.h"
 #include "dialog1.h"
 #include "Tree.h"
+#include "math.h"
 
 
 Dialog::Dialog(QWidget *parent, Node* _r) :
@@ -53,7 +54,9 @@ void draw_tree(Node *p, QGraphicsScene *scene){
 	cnt.scene=scene;
 	cnt.brush_black = new QBrush(Qt::black);
 	cnt.brush_white = new QBrush(Qt::white);
-	iterate_tree(p, &cnt, &draw_tree_func);}
+    iterate_tree(p, &cnt, &draw_tree_func);
+    delete cnt.brush_black;
+    delete cnt.brush_white;}
 	
 
 int number;
@@ -61,10 +64,10 @@ int number;
 void Dialog::on_pushButton_clicked(){
 	if(number>1){
     /* insert data in tree */
-	add(&r,ui->lineEdit->text().toInt(),ui->lineEdit_2->text().toInt(),1,1);
-	qDebug()<<"Tree is:"
+    add(&r,ui->lineEdit->text().toInt(),ui->lineEdit_2->text().toInt(),8,1);
+    qDebug()<<"Tree is:";
 	print_tree(r);
-	qDebug()<<"-------"
+    qDebug()<<"-------";
 	/* redraw tree */
     //QPen pen(Qt::black);
     QBrush br_grey(QColor(128,128,128));
@@ -109,6 +112,14 @@ void Dialog::SetPoint(int x, int y, int size){
 	
 }
 
+void Dialog::Add_Surround(float sig_r,float x_r,float y_r,float r,float sig_f,float x_f,float y_f,float f){
+    float x,y;
+    x=(1/(sig_r * sqrt(6.28)))*exp(-((x_r-r)*(x_r-r))/(2*sig_r*sig_r))*cos((1/(sig_f * sqrt(6.28)))*exp(-((x_f-f)*(x_f-f))/(2*sig_f*sig_f)));
+    y=(1/(sig_r * sqrt(6.28)))*exp(-((y_r-r)*(y_r-r))/(2*sig_r*sig_r))*cos((1/(sig_f * sqrt(6.28)))*exp(-((y_f-f)*(y_f-f))/(2*sig_f*sig_f)));
+    qDebug()<<"Surround x"<<x;
+    qDebug()<<"Surround y"<<y;
+}
+
 
 void Dialog::on_lineEdit_3_editingFinished()
 {
@@ -139,4 +150,5 @@ void Dialog::on_pushButton_3_clicked()
     qDebug()<<"Clicked";
     qDebug()<<"r v pushButtonClicked"<<r;
     SetPoint(100,100,8);
+    Add_Surround(0.7,0.1,0.1,0,0.7,0.1,0.1,0);
 }
