@@ -173,7 +173,7 @@ void Dialog::Add_Line(int x1, int y1, int x2, int y2, int size){
                       y += dy;
                       length=length-size;
                 }
-                add(&r,xfin,yfin,size,0); //последний черный квадрат
+                add(&r,xfin,yfin,size,0); //последний черный квадрат/
 
           }
 }
