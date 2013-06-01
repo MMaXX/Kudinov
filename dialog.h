@@ -21,6 +21,7 @@ public:
   void SetLine(int,int,int,int);
   void SetPoint(int,int,int);
   void Add_Surround(float,float,float,float,float,float,float,float);
+  void Add_Line(int, int, int, int, int);
   Node* Choice(Node*,int,int);
   //int GetDatX(Node*,int);
   //int GetDatY(Node*,int);

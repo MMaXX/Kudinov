@@ -7,6 +7,10 @@
 #include "dialog1.h"
 #include "Tree.h"
 #include "math.h"
+#include <cmath>
+#include <iostream>
+
+#define roundf(x) floor(x+0.5f)
 
 
 Dialog::Dialog(QWidget *parent, Node* _r) :
@@ -112,6 +116,67 @@ void Dialog::SetPoint(int x, int y, int size){
 	
 }
 
+void Dialog::Add_Line(int x1, int y1, int x2, int y2, int size){
+    float xfin,yfin;
+
+          int dx = (x2 - x1 >= 0 ? size : -size);
+          int dy = (y2 - y1 >= 0 ? size : -size);
+
+          int lengthX = abs(x2 - x1);
+          int lengthY = abs(y2 - y1);
+
+          int length = std::max(lengthX, lengthY);
+
+          if (length == 0)
+          {
+                //SetPixel(hdc, x1, y1, 0);
+          }
+
+          if (lengthY <= lengthX)
+          {
+                // Начальные значения
+                int x = x1;
+                float y = y1;
+                float m;
+
+                // Основной цикл
+                length++;
+
+                while(length>=0)
+
+                {
+                    m=roundf(y);
+                    add(&r,x,(roundf(y/size)*size),size,1);
+                    xfin=x;
+                    yfin=roundf(y/size)*size;
+                      x += dx;
+                      y += dy * float(lengthY) / lengthX;
+                      length=length-size;
+                }
+                add(&r,xfin,yfin,size,0); //последний черный квадрат
+
+          }
+          else
+          {
+                // Начальные значения
+                float x = x1;
+                int y = y1;
+
+                // Основной цикл
+                length++;
+                while(length>=0)
+                {
+                      add(&r,(roundf(x/size)*size),y,size,1);
+                      xfin=roundf(x/size)*size;
+                      yfin=y;
+                      x += dx * float(lengthX) / lengthY;
+                      y += dy;
+                      length=length-size;
+                }
+                add(&r,xfin,yfin,size,0); //последний черный квадрат
+
+          }
+}
 void Dialog::Add_Surround(float sig_r,float x_r,float y_r,float r,float sig_f,float x_f,float y_f,float f){
     float x,y;
     x=(1/(sig_r * sqrt(6.28)))*exp(-((x_r-r)*(x_r-r))/(2*sig_r*sig_r))*cos((1/(sig_f * sqrt(6.28)))*exp(-((x_f-f)*(x_f-f))/(2*sig_f*sig_f)));
@@ -149,6 +214,7 @@ void Dialog::on_pushButton_3_clicked()
 {
     qDebug()<<"Clicked";
     qDebug()<<"r v pushButtonClicked"<<r;
-    SetPoint(100,100,8);
+ //   SetPoint(100,100,8);
     Add_Surround(0.7,0.1,0.1,0,0.7,0.1,0.1,0);
+    Add_Line(96,96,112,120,8);
 }
