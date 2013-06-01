@@ -24,7 +24,7 @@ public:
   void Add_Line(int, int, int, int, int);
   Node* Choice(Node*,int,int);
   //int GetDatX(Node*,int);
-  //int GetDatY(Node*,int);
+  //int GetDatY(Node*,int)
   Node* r;
 
 private slots:
