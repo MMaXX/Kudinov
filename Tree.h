@@ -9,7 +9,7 @@ struct Node{
     int xmin;
     int ymax;
     int ymin;
-    /* state of square [0..1] --- for list; -1 for inner node */
+    /* state of square [0..1] --- for leaf; -1 for inner node */
 	float state;
     struct Node *branch[4],*parent;
 };

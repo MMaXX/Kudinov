@@ -1,19 +1,16 @@
 CONFIG += console
 
 HEADERS += \
-    QtreeMainWin.h \
-    QtreeVisApp.h \
-    dialog.h \
-    dialog1.h \
-    Tree.h
+    Tree.h \
+    mainwindow.h \
+    dialog123.h
 
 SOURCES += \
     main.cpp \
-    QtreeMainWin.cpp \
-    dialog.cpp \
-    dialog1.cpp \
-    Tree.cpp
+    Tree.cpp \
+    mainwindow.cpp \
+    dialog123.cpp
 
 FORMS += \
-    dialog.ui \
-    dialog1.ui
+    mainwindow.ui \
+    dialog123.ui

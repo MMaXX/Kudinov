@@ -1,7 +1,10 @@
-#include <QtGui>
-#include "QtreeVisApp.h"
 
-int main(int argc, char* argv[])
+#include <QtGui/QApplication>
+#include "mainwindow.h"
+int main(int argc, char *argv[])
 {
-    QtreeVisApp app (argc,argv);
+    QApplication apl(argc, argv);
+    MainWindow *MW =new MainWindow;
+    MW->show();
+    return apl.exec();
 }
