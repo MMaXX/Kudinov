@@ -29,6 +29,7 @@
     </property>
     <addaction name="actionCreate_map"/>
     <addaction name="separator"/>
+    <addaction name="actionLoad_map"/>
    </widget>
    <addaction name="menuMap"/>
   </widget>
@@ -36,6 +37,11 @@
   <action name="actionCreate_map">
    <property name="text">
     <string>Create map</string>
+   </property>
+  </action>
+  <action name="actionLoad_map">
+   <property name="text">
+    <string>Load map</string>
    </property>
   </action>
  </widget>

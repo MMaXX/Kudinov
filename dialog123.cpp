@@ -1,5 +1,6 @@
 #include<QDebug>
 #include<QGraphicsView>
+#include<QFile>
 #include<QGraphicsScene>
 #include<QtGui>
 #include "Dialog123.h"
@@ -63,6 +64,7 @@ void draw_tree(Node *p, QGraphicsScene *scene){
 
 
 int number;
+int file_clear=1;
 
 void Dialog123::on_pushButton_clicked(){
 
@@ -79,6 +81,20 @@ void Dialog123::on_pushButton_clicked(){
     scene->clear();
     scene->addRect(0,0,512,512,QPen(),br_grey);
     draw_tree(r,scene);
+
+    /* сохранение в файл */
+    QFile file_remove("c://test.txt");
+    if (file_clear==1) file_remove.remove(); //удаление файла при каждом новом вводе
+    file_clear++;
+    QFile file("c://test.txt");
+    file.open(QIODevice:: Append | QIODevice::Text); //запись в конец файла
+    QTextStream out(&file);
+    out << ui->lineEdit->text();
+    out << " ";
+    out << ui->lineEdit_2->text();
+    out << "\n";
+
+    file.close();
 }
 
 void Dialog123::SetLine(int x1,int y1,int x2, int y2)
@@ -177,6 +193,7 @@ void Dialog123::Add_Line(int x1, int y1, int x2, int y2, int size){
 }
 void Dialog123::Add_Surround(float sig_r,float x_r,float y_r,float r,float sig_f,float x_f,float y_f,float f){
     float x,y;
+    float mas[5];
     x=(1/(sig_r * sqrt(6.28)))*exp(-((x_r-r)*(x_r-r))/(2*sig_r*sig_r))*cos((1/(sig_f * sqrt(6.28)))*exp(-((x_f-f)*(x_f-f))/(2*sig_f*sig_f)));
     y=(1/(sig_r * sqrt(6.28)))*exp(-((y_r-r)*(y_r-r))/(2*sig_r*sig_r))*cos((1/(sig_f * sqrt(6.28)))*exp(-((y_f-f)*(y_f-f))/(2*sig_f*sig_f)));
     qDebug()<<"Surround x"<<x;
@@ -208,7 +225,7 @@ void Dialog123::on_pushButton_2_clicked()
     qDebug()<<"r v pushButtonClicked"<<r;
  //   SetPoint(100,100,8);
 
-    Add_Surround(0.7,0.1,0.1,0,0.7,0.1,0.1,0);
+    Add_Surround(4,256,256,5,4,256,256,5);
   Add_Line(ui->lineEdit_3->text().toInt(),ui->lineEdit_4->text().toInt(),ui->lineEdit_5->text().toInt(),ui->lineEdit_6->text().toInt(),8);
     QBrush br_grey(QColor(128,128,128));
 
@@ -217,4 +234,6 @@ void Dialog123::on_pushButton_2_clicked()
     scene->addRect(0,0,512,512,QPen(),br_grey);
     draw_tree(r,scene);
 }
+
+
 
