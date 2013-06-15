@@ -98,7 +98,10 @@ int add(Node **root, int point_x, int point_y, int size, float point_value){
 				if(current->branch[i])
 					destroy_tree(&(current->branch[i]));
 			/* set state to point_value*/
-			current->state = point_value;
+            if (current->state == NoInfo)
+                current->state = point_value;
+                else
+                    current->state=(current->state + point_value)/2;
 			return 0;}
 		
 		/* continue to subtree: if it doesn't exist, create it */
