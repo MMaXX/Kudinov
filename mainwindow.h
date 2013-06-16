@@ -18,6 +18,7 @@ public:
     ~MainWindow();
     void SetLine(int,int,int,int);
     void SetPoint(int,int,int);
+    void Massiv(int,int,short mas[20]);
     void Add_Surround(int x, int y, double dx, double dy, int size);
     void Add_Line(int, int, int, int, int);
     Node* Choice(Node*,int,int);

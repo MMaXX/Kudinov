@@ -1,4 +1,5 @@
 #include <cmath>
+#include <math.h>
 #include <QDebug>
 #include <QFile>
 #include "mainwindow.h"
@@ -23,6 +24,20 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
+}
+
+void MainWindow::Massiv(int xstart, int ystart,short mas[20]){
+
+    int xfin=0,yfin=0;
+    int i=0;
+    double f=0;
+    while(i<=19){
+        xfin=mas[i]*cos(f * 3.14/180)+xstart;
+        yfin=mas[i]*sin(f * 3.14/180)+ystart;
+        Add_Line(xstart,ystart,xfin,yfin,4);
+        i++;
+        f=f+3;
+    }
 }
 
 void MainWindow::on_actionCreate_map_triggered()
@@ -73,6 +88,29 @@ int number;
 int file_clear=1;
 
 void MainWindow::on_pushButton_clicked(){
+
+    short m[20];
+    m[0]=120;
+    m[1]=100;
+    m[2]=110;
+    m[3]=200;
+    m[4]=100;
+    m[5]=120;
+    m[6]=130;
+    m[7]=100;
+    m[8]=230;
+    m[9]=180;
+    m[10]=100;
+    m[11]=50;
+    m[12]=110;
+    m[13]=200;
+    m[14]=140;
+    m[15]=120;
+    m[16]=180;
+    m[17]=100;
+    m[18]=200;
+    m[19]=180;
+    Massiv(8,8,m);
 
     /* insert data in tree */
     add(&r,ui->lineEdit->text().toInt(),ui->lineEdit_2->text().toInt(),8,1);
