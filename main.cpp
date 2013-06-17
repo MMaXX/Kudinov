@@ -6,5 +6,7 @@ int main(int argc, char *argv[])
     QApplication apl(argc, argv);
     MainWindow *MW =new MainWindow;
     MW->show();
-    return apl.exec();
+  /*  WSADATA wsaData;
+    WSAStartup(MAKEWORD(2, 2), &wsaData);
+    */return apl.exec();
 }

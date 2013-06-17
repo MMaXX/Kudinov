@@ -1,10 +1,107 @@
 #include <cmath>
-#include <math.h>
+//#include <math.h>
 #include <QDebug>
 #include <QFile>
+#include <QThread>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Tree.h"
+
+#define PI 3.14159265359
+
+#define MY_IP "192.168.208.184"
+#define MY_PORT 6667
+
+void toFile(char c){
+    QFile file("c://test123.txt");
+    file.open(QIODevice:: Append | QIODevice::Text); //запись в конец файла
+    QTextStream out(&file);
+    out << c;
+    out << "\n";
+}
+
+void Server:: initSocket(){
+    qDebug()<<"initSocket";
+    toFile('5');
+
+
+    udpSocket = new QUdpSocket(this);
+    qDebug()<<"initSocket1";
+    toFile('6');
+
+
+    udpSocket->bind(QHostAddress(MY_IP), MY_PORT);
+    qDebug()<<"initSocket2";
+    toFile('7');
+
+    connect(udpSocket, SIGNAL(readyRead()),this, SLOT(readPendingDatagrams()));
+    qDebug()<<"initSocket3";
+    toFile('8');
+
+    /* for (int k=0;k<361;k++){
+        arr[k]=1+k;
+    }*/
+
+}
+
+void Server::readPendingDatagrams()
+{
+    qDebug()<<"before read 1211";
+    toFile('9');
+
+    while (udpSocket->hasPendingDatagrams())  {
+        qDebug()<<"before read";
+        toFile('q');
+
+       //char datagram;
+       //datagram.resize(udpSocket->pendingDatagramSize());
+       QHostAddress sender;
+       quint16 senderPort;
+       qDebug()<<"before read";
+       toFile('b');
+
+       udpSocket->readDatagram((char*)arr, 361*sizeof(short),&sender, &senderPort);
+       toFile('a');
+
+
+
+
+       qDebug()<<"after read";
+       /*for (int i = 0; i < datagram.size()/2; i++){
+           arr[i]=short(datagram[2*i])<<8 + datagram[2*i+1];
+       }*/
+      // processTheDatagram(datagram);
+   }
+}
+
+void ReceiverObject::doWork(){
+
+    qDebug()<<"doWork1";
+    toFile('w');
+
+
+    Server* s1 = new Server;
+    ranges=s1->arr;
+    s1->initSocket();
+    while(1){}
+    /*int sockfd,n,len;
+    struct sockaddr_in servaddr,cliaddr;
+    // create socket object
+    sockfd=socket(AF_INET,SOCK_DGRAM,0);
+    if(sockfd==INVALID_SOCKET){
+        qDebug()<<"Socket isn't valid";
+        return;}
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr=inet_addr(MY_IP);
+    servaddr.sin_port=htons(MY_PORT);
+    int r1 = bind(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+    if(r1 == SOCKET_ERROR){
+        qDebug()<<"Bind error";
+        return;}
+    while(1){
+        n = recvfrom(sockfd,(char*)ranges,361*sizeof(short),0,(struct sockaddr *)&cliaddr,&len);}
+*/
+}
 
 MainWindow::MainWindow(QWidget *parent, Node* _r) :
     QMainWindow(parent),
@@ -18,7 +115,30 @@ MainWindow::MainWindow(QWidget *parent, Node* _r) :
 	ui->lineEdit_diff->setText("0");
     scene->setSceneRect(0,0,512,512);
 	scene->clear();
-    scene->addRect(0,0,512,512,QPen(),QBrush(QColor(127,127,127)));}
+    scene->addRect(0,0,512,512,QPen(),QBrush(QColor(127,127,127)));
+    rf_data=NULL;
+    /* start data receiver thread */
+    qDebug()<<"before read 1";
+    toFile('1');
+
+    rf_data = new ReceiverObject;
+    rf_data->ranges=NULL;
+    qDebug()<<"before read 2";
+    toFile('2');
+
+    QThread *workerThread = new QThread(this);
+    qDebug()<<"before read 3";
+    toFile('3');
+
+    connect(workerThread, SIGNAL(started()), rf_data, SLOT(doWork()));
+    qDebug()<<"before read 4";
+    toFile('4');
+   // connect(workerThread, SIGNAL(finished()), this, SLOT(destroyed()));
+    rf_data->moveToThread(workerThread);
+
+    // Starts an event loop, and emits workerThread->started()
+    workerThread->start();
+}
 
 MainWindow::~MainWindow()
 {
@@ -26,17 +146,23 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::Massiv(int xstart, int ystart,short mas[20]){
+void MainWindow::Massiv(int xstart, int ystart,short mas[], int len){
 
     int xfin=0,yfin=0;
     int i=0;
     double f=0;
-    while(i<=19){
-        xfin=mas[i]*cos(f * 3.14/180)+xstart;
-        yfin=mas[i]*sin(f * 3.14/180)+ystart;
+    qDebug()<<"Massiv";
+
+    while(i<len){
+        qDebug()<<"massiv1"<< "i"<< i;
+
+        xfin=mas[i]*cos(f * PI/180)+xstart;
+        qDebug()<<"massiv2";
+
+        yfin=mas[i]*sin(f * PI/180)+ystart;
         Add_Line(xstart,ystart,xfin,yfin,4);
         i++;
-        f=f+3;
+        f=f+0.5;
     }
 }
 
@@ -90,28 +216,29 @@ int file_clear=1;
 void MainWindow::on_pushButton_clicked(){
 
     short m[20];
-    m[0]=120;
-    m[1]=100;
-    m[2]=110;
-    m[3]=200;
-    m[4]=100;
-    m[5]=120;
-    m[6]=130;
-    m[7]=100;
-    m[8]=230;
-    m[9]=180;
-    m[10]=100;
-    m[11]=50;
-    m[12]=110;
-    m[13]=200;
-    m[14]=140;
-    m[15]=120;
-    m[16]=180;
-    m[17]=100;
-    m[18]=200;
-    m[19]=180;
-    Massiv(8,8,m);
-
+    m[0]=300;
+    m[1]=300;
+    m[2]=300;
+    m[3]=300;
+    m[4]=300;
+    m[5]=300;
+    m[6]=300;
+    m[7]=300;
+    m[8]=300;
+    m[9]=300;
+    m[10]=300;
+    m[11]=300;
+    m[12]=300;
+    m[13]=300;
+    m[14]=300;
+    m[15]=300;
+    m[16]=300;
+    m[17]=300;
+    m[18]=300;
+    m[19]=300;
+    //Massiv(8,8,m);
+    if(rf_data->ranges)
+        Massiv(256,256,rf_data->ranges+1,360);
     /* insert data in tree */
     add(&r,ui->lineEdit->text().toInt(),ui->lineEdit_2->text().toInt(),8,1);
     qDebug()<<"Tree is:";
@@ -185,7 +312,7 @@ void MainWindow::Add_Line(int x1, int y1, int x2, int y2, int size){
           int lengthX = abs(x2 - x1);
           int lengthY = abs(y2 - y1);
 
-          int length = std::max(lengthX, lengthY);
+          int length = (lengthX> lengthY)?lengthX:lengthY;
 		  
 		  int area_size = ui->lineEdit_diff->text().toInt();
 		  

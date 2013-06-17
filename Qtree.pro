@@ -1,5 +1,7 @@
 CONFIG += console
 
+QT += network
+
 HEADERS += \
     Tree.h \
     mainwindow.h
