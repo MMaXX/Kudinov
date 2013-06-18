@@ -106,7 +106,7 @@ int add(Node **root, int point_x, int point_y, int size, float point_value){
 		
 		/* continue to subtree: if it doesn't exist, create it */
 		pos = choose_branch(current, point_x, point_y);
-		if(!current->branch[pos]){
+        if(pos>=0 && !current->branch[pos]){
 			int new_min_x = current->xmin + (pos >> 1)*(current->xmax - current->xmin)/2;
 			int new_min_y = current->ymin + (pos & 1)*(current->ymax - current->ymin)/2;
 			current->branch[pos] = create_node(current, new_min_x, new_min_x + (current->xmax - current->xmin)/2,
@@ -114,7 +114,9 @@ int add(Node **root, int point_x, int point_y, int size, float point_value){
 		//print_tree(*root,0);
 		
 		/* go to subtree */
-		current = current->branch[pos];}
+        if(pos>=0)
+            current = current->branch[pos];
+        else return -2;}
 	return 0;}
 
 

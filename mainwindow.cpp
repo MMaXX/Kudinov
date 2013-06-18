@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Tree.h"
+#include <stdio.h>
 
 #define PI 3.14159265359
 
@@ -13,7 +14,7 @@
 #define MY_PORT 6667
 
 void toFile(char c){
-    QFile file("c://test123.txt");
+    QFile file("c://test12.txt");
     file.open(QIODevice:: Append | QIODevice::Text); //запись в конец файла
     QTextStream out(&file);
     out << c;
@@ -34,14 +35,19 @@ void Server:: initSocket(){
     qDebug()<<"initSocket2";
     toFile('7');
 
-    connect(udpSocket, SIGNAL(readyRead()),this, SLOT(readPendingDatagrams()));
+   // connect(udpSocket, SIGNAL(readyRead()),this, SLOT(readPendingDatagrams()));
     qDebug()<<"initSocket3";
     toFile('8');
 
-    /* for (int k=0;k<361;k++){
-        arr[k]=1+k;
-    }*/
-
+    //QString temp1;
+    int i=0;
+    FILE* ff =  fopen("c://test123.txt","rt");
+    //file.open(QIODevice::ReadOnly | QIODevice::Text);
+    for(int i=0;i<360;i++){
+        fscanf(ff,"%d",&arr[i]);
+        arr[i]/=5;
+        qDebug()<<arr[i];}
+    fclose(ff);
 }
 
 void Server::readPendingDatagrams()
@@ -176,17 +182,17 @@ void MainWindow::on_actionCreate_map_triggered()
 
 void MainWindow::on_actionLoad_map_triggered()  // ??????? загрузка карты из файла
 {
-    QString temp1, temp2;
-    QFile file("c://test.txt");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream out(&file);
-    while (!out.atEnd()){
-    out >> temp1;
-    out >> temp2;
-    add(&r,temp1.toInt(),temp2.toInt(),8,1);
-    }
-    file.close();
-    show();
+ //   QString temp1, temp2;
+ //   int i;
+  //  QFile file("c://test123.txt");
+  ////  file.open(QIODevice::ReadOnly | QIODevice::Text);
+  //  QTextStream out(&file);
+   // while (!out.atEnd() && i<360){
+  //  out >> temp1;
+   // arr[i]= int(temp1)/3;
+
+  //  file.close();
+ //   show();
 }
 
 
@@ -238,7 +244,7 @@ void MainWindow::on_pushButton_clicked(){
     m[19]=300;
     //Massiv(8,8,m);
     if(rf_data->ranges)
-        Massiv(256,256,rf_data->ranges+1,360);
+        Massiv(256,8,rf_data->ranges+1,360);
     /* insert data in tree */
     add(&r,ui->lineEdit->text().toInt(),ui->lineEdit_2->text().toInt(),8,1);
     qDebug()<<"Tree is:";
